@@ -1,0 +1,17 @@
+{
+    "name": "cifradorsa",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "author": "Elizalde Hernandez Alan y Lopez Castillo Azurim Sua",
+    "license": "ISC",
+    "dependencies": {
+        "big-integer": "^1.6.50",
+        "express": "^4.17.1",
+        "socket.io": "^4.3.1"
+    }
+}
