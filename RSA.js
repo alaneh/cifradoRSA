@@ -1,3 +1,5 @@
+var prueba = document.getElementById("XD");
+
 // mandamos a llamar al big integer
 
 //Definir los numeros grandotes
@@ -5,25 +7,27 @@ var tamprimo;
 var p, q, n;
 var fi;
 var e, d;
+var limite = 20; // 10 elevado a tamprimo
+var j = 2;
+var numerosPrimos = [];
+
+for (; j < limite; j++) {
+    if (primo(j)) {
+        numerosPrimos.push(j);
+    }
+}
+console.log(numerosPrimos);
 
 function RSA(tamprimo) {
     this.tamprimo = tamprimo;
 }
 //generar los numeros primos
 function generarPrimos() {
-    var limite = 100; // 10 elevado a tamprimo
-    var j = 2;
-    var numerosPrimos = [];
-
-    for (; j < limite; j++) {
-        if (primo(j)) {
-            numerosPrimos.push(j);
-        }
-    }
     do p = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
     while (p == q) {
         q = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
     }
+    return p, q;
 }
 
 function primo(numero) {
@@ -53,24 +57,48 @@ function maximoComunDivisor(a, b) {
 el primero esta definido como:
 primero.compareTo(segundo)
 */
+
 function generarClaves() {
+    do p = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
+    while (p == q) {
+        q = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
+    }
     n = p * q;
     fi = p - 1;
     fi *= (q - 1);
     do e = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)]; // considerar tamprimo
-    while (fi - e > 0 || maximoComunDivisor(e, fi) != 1);
-    d = modInverse(e, fi);
+    while (fi < e || maximoComunDivisor(e, fi) != 1);
+    d = modInverse(fi, e);
+    alert(prueba.value)
+    var respuesta = cifrar(prueba.value, e, n);
+    return arrayNums = [
+        p,
+        q,
+        n,
+        fi,
+        e,
+        d,
+        respuesta
+    ]
 }
 
+function correrDesifrado() {
+    generarPrimos();
+    generarClaves();
+    cifrar(prueba, e, n);
+}
+
+
 function modInverse(a, m) {
-    //gcd
+    a = (a % m + m) % m
+        // find the gcd
     const s = []
     let b = m
     while (b) {
         [a, b] = [b, a % b]
         s.push({ a, b })
     }
-    //inverse
+    // find the inverse
     let x = 1
     let y = 0
     for (let i = s.length - 2; i >= 0; --i) {
@@ -82,7 +110,7 @@ function modInverse(a, m) {
 function cifrar(mensaje, e, n) {
     var i = 0;
     var respuesta = "";
-    for (; i < mensaje.length; i++) {
+    for (i; i < mensaje.length; i++) {
         if (i > 0) {
             respuesta += ";";
         }
@@ -91,6 +119,7 @@ function cifrar(mensaje, e, n) {
         var x = modPow(caf, e, n);
         respuesta += x.toString();
     }
+    console.log(respuesta);
     return respuesta;
 }
 //mod pow
@@ -112,5 +141,6 @@ function descifrar(mensaje, d, n) {
         var x = modPow(de, d, n);
         respuesta += x.toString();
     }
+    console.log("Descifrado = " + respuesta)
     return respuesta;
 }
