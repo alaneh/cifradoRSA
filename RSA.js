@@ -18,6 +18,19 @@ for (; j < limite; j++) {
 }
 console.log(numerosPrimos);
 
+do p = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
+while (p == q) {
+    q = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
+}
+n = p * q;
+fi = p - 1;
+fi *= (q - 1);
+do e = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)]; // considerar tamprimo
+while (fi < e || maximoComunDivisor(e, fi) != 1);
+d = modInverse(fi, e);
+
+
+
 function RSA(tamprimo) {
     this.tamprimo = tamprimo;
 }
@@ -59,27 +72,9 @@ primero.compareTo(segundo)
 */
 
 function generarClaves() {
-    do p = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
-    while (p == q) {
-        q = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
-    }
-    n = p * q;
-    fi = p - 1;
-    fi *= (q - 1);
-    do e = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)]; // considerar tamprimo
-    while (fi < e || maximoComunDivisor(e, fi) != 1);
-    d = modInverse(fi, e);
     alert(prueba.value)
     var respuesta = cifrar(prueba.value, e, n);
-    return arrayNums = [
-        p,
-        q,
-        n,
-        fi,
-        e,
-        d,
-        respuesta
-    ]
+    return respuesta;
 }
 
 function correrDesifrado() {
@@ -106,7 +101,13 @@ function modInverse(a, m) {
     }
     return (y % m + m) % m
 }
-
+//p y q 
+//17 y 2
+// 1;26;23
+//12623
+//123
+//1;32;5
+//1325
 function cifrar(mensaje, e, n) {
     var i = 0;
     var respuesta = "";
@@ -120,6 +121,10 @@ function cifrar(mensaje, e, n) {
         respuesta += x.toString();
     }
     console.log(respuesta);
+    console.log(p)
+    console.log(q)
+    console.log(n)
+    console.log(fi)
     return respuesta;
 }
 //mod pow
@@ -132,15 +137,43 @@ function modPow(c, exponent, module) {
     x %= module;
     return x;
 }
-
-function descifrar(mensaje, d, n) {
+/**
+ * 
+ * public String descifrar(BigInteger[] cifrado){
+        
+        BigInteger[] descifrado = new BigInteger[cifrado.length];
+        
+        //vamos a descifrar con la formula
+        // Md = C ^d mod n
+        
+        for(int j = 0; j < descifrado.length; j++){
+            descifrado[j] = cifrado[j].modPow(d, n);
+        }
+        
+        char[] charArray = new char[descifrado.length];
+        
+        for(int j = 0; j < charArray.length; j++ ){
+            charArray[j] = (char)(descifrado[j].intValue());
+        }
+        
+        return (new String(charArray));
+    }
+ */
+function descifrar(mensaje, e, n) {
     var i = 0;
     var respuesta = mensaje.split(";");
-    for (; i < mensaje.length; i++) {
-        var de = descifrar[i];
-        var x = modPow(de, d, n);
-        respuesta += x.toString();
+    var mensajeDescifrado = "";
+    for (i; i < prueba.value.length; i++) {
+        var de = respuesta[i];
+        var caf = parseInt(de, 10);
+        var x = modPow(caf, e, n);
+        mensajeDescifrado += x.toString();
     }
-    console.log("Descifrado = " + respuesta)
-    return respuesta;
+    console.log("Descifrado = " + mensajeDescifrado)
+    return mensajeDescifrado;
+}
+
+function Hacerdescifrado() {
+    var mensaje = generarClaves();
+    descifrar(mensaje, d, n);
 }
