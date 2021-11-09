@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <h1>Hola mundo</h1>
+    <h1>Chat con sockets</h1>
     <div id="chat-container" class="chat-container">
         <div id="chat-window" class="chat-window">
             <div id="output" class="output"></div>
@@ -20,9 +20,12 @@
             <button id="send" class="send">Enviar</button>
         </div>
     </div>
-
-
-
+    <h1>Cifrar y descifrar</h1>
+    <input id="texto" type="text" placeholder="texto">
+    <button onclick="correrCifrado()">Cifrar</button>
+    <button onclick="Hacerdescifrado()">Descifrar</button>
+    <div id="Respuesta"></div>
+    <script src="./RSA.js"></script>
     <script src="/socket.io/socket.io.js" charset="utf-8"></script>
     <script src="./chat.js"></script>
 </body>

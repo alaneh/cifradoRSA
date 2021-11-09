@@ -1,48 +1,28 @@
-var prueba = document.getElementById("XD");
+var texto = document.getElementById("texto");
 
 // mandamos a llamar al big integer
-
+//Big integer aun no se implementa(En su lugar se usan variables y metodos diferentes)
 //Definir los numeros grandotes
+//traemos el tamaño del primo y usamos su constructor para obtener el valor
 var tamprimo;
-var p, q, n;
-var fi;
-var e, d;
-var limite = 20; // 10 elevado a tamprimo
-var j = 2;
-var numerosPrimos = [];
-
-for (; j < limite; j++) {
-    if (primo(j)) {
-        numerosPrimos.push(j);
-    }
-}
-console.log(numerosPrimos);
-
-do p = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
-while (p == q) {
-    q = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
-}
-n = p * q;
-fi = p - 1;
-fi *= (q - 1);
-do e = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)]; // considerar tamprimo
-while (fi < e || maximoComunDivisor(e, fi) != 1);
-d = modInverse(fi, e);
-
-
 
 function RSA(tamprimo) {
     this.tamprimo = tamprimo;
 }
-//generar los numeros primos
-function generarPrimos() {
-    do p = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
-    while (p == q) {
-        q = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
-    }
-    return p, q;
-}
+//declaracion de variables
+var p, q, n;
+var fi;
+var e, d;
+var limite = 20; // 10 elevado a tamprimo para big integer
+var numerosPrimos = []; // aquí se guardaran los primos dentro del rango j y limite
 
+//generacion de primos
+for (var j = 2; j < limite; j++) {
+    if (primo(j)) {
+        numerosPrimos.push(j);
+    }
+}
+//Validacion para saber si el numero que se evalua es primo
 function primo(numero) {
     for (var i = 2; i < numero; i++) {
         if (numero % i === 0) {
@@ -51,7 +31,29 @@ function primo(numero) {
     }
     return numero !== 1;
 }
+//Generacion de p, q, n, fi, e, d (Solo lo hace una vez por recarga)
+do p = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
+while (p == q) {
+    q = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
+}
+//Esto deberia meterse en una funcion para calcular n,fi,e,d a partir de p y q
+n = p * q;
+fi = p - 1;
+fi *= (q - 1);
+do e = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)]; // considerar tamprimo
+while (fi < e || maximoComunDivisor(e, fi) != 1);
+d = modInverse(fi, e);
 
+//generar los numeros primos (p,q) para usar cada ver que cifra 
+//como funcion para automatizar el proceso de generacion
+function generarPrimos() {
+    do p = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
+    while (p == q) {
+        q = numerosPrimos[Math.floor(Math.random() * numerosPrimos.length)];
+    }
+    return p, q;
+}
+//GCD maximo comun divisor de dos numeros
 function maximoComunDivisor(a, b) {
     let temporal;
     while (b !== 0) {
@@ -61,28 +63,13 @@ function maximoComunDivisor(a, b) {
     }
     return a;
 };
-//do e = new BigInteger(2*tamprimo, new Random());
-//while((e.compareTo(fi) != -1) || (e.gcd(fi).compareTo(BigInteger.valueOf(1)) != 0));
-/*
-0 es para cuando son iguales
-1 es para cuando el valor del primero es mayor que el segundo
--1 es para cuando el segundo es mayor que el primero
-el primero esta definido como:
-primero.compareTo(segundo)
-*/
 
-function generarClaves() {
-    alert(prueba.value)
-    var respuesta = cifrar(prueba.value, e, n);
+function correrCifrado() {
+    var respuesta = cifrar(texto.value, e, n);
     return respuesta;
 }
 
-function correrDesifrado() {
-    generarPrimos();
-    generarClaves();
-    cifrar(prueba, e, n);
-}
-
+//Modulo inverso
 
 function modInverse(a, m) {
     a = (a % m + m) % m
@@ -101,13 +88,7 @@ function modInverse(a, m) {
     }
     return (y % m + m) % m
 }
-//p y q 
-//17 y 2
-// 1;26;23
-//12623
-//123
-//1;32;5
-//1325
+
 function cifrar(mensaje, e, n) {
     var i = 0;
     var respuesta = "";
@@ -137,33 +118,12 @@ function modPow(c, exponent, module) {
     x %= module;
     return x;
 }
-/**
- * 
- * public String descifrar(BigInteger[] cifrado){
-        
-        BigInteger[] descifrado = new BigInteger[cifrado.length];
-        
-        //vamos a descifrar con la formula
-        // Md = C ^d mod n
-        
-        for(int j = 0; j < descifrado.length; j++){
-            descifrado[j] = cifrado[j].modPow(d, n);
-        }
-        
-        char[] charArray = new char[descifrado.length];
-        
-        for(int j = 0; j < charArray.length; j++ ){
-            charArray[j] = (char)(descifrado[j].intValue());
-        }
-        
-        return (new String(charArray));
-    }
- */
+
 function descifrar(mensaje, e, n) {
     var i = 0;
     var respuesta = mensaje.split(";");
     var mensajeDescifrado = "";
-    for (i; i < prueba.value.length; i++) {
+    for (i; i < texto.value.length; i++) {
         var de = respuesta[i];
         var caf = parseInt(de, 10);
         var x = modPow(caf, e, n);
@@ -177,3 +137,9 @@ function Hacerdescifrado() {
     var mensaje = generarClaves();
     descifrar(mensaje, d, n);
 }
+/**
+ * Se encontraron errores de codificacion, 
+ * al no usar big int se cambiaron parametros 
+ * por lo tanto no funciona de la misma forma, 
+ * entonces deberas de cambiar eso para que cifre y descifre
+ */
