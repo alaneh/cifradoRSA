@@ -66,6 +66,7 @@ function maximoComunDivisor(a, b) {
 
 function correrCifrado() {
     var respuesta = cifrar(texto.value, e, n);
+    console.log(respuesta)
     return respuesta;
 }
 
@@ -101,7 +102,6 @@ function cifrar(mensaje, e, n) {
         var x = modPow(caf, e, n);
         respuesta += x.toString();
     }
-    console.log(respuesta);
     console.log(p)
     console.log(q)
     console.log(n)
@@ -134,7 +134,7 @@ function descifrar(mensaje, e, n) {
 }
 
 function Hacerdescifrado() {
-    var mensaje = generarClaves();
+    var mensaje = correrCifrado();
     descifrar(mensaje, d, n);
 }
 /**
